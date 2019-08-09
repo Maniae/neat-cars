@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"lib": ["esnext", "dom"],
+		"jsx": "react",
+		"target": "es5",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"downlevelIteration": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true
+	}
+}

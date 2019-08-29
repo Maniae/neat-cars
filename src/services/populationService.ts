@@ -4,10 +4,11 @@ import { Game } from "../core/game";
 import { Car } from "../domain/car";
 import { CarService } from "./carService";
 
-const POPULATION_SIZE = 10;
-const MUTATION_PROBABILITY = 0;
-const NETWORK_SHAPE = [2, 2, 2];
+const POPULATION_SIZE = 100;
+const MUTATION_PROBABILITY = 0.3;
+const NETWORK_SHAPE = [4, 4, 2];
 const MAX_FRAMES = 625; // ~10 seconds
+// const MAX_FRAMES = 100;
 
 export class PopulationService {
 	generation: number;
@@ -22,9 +23,7 @@ export class PopulationService {
 		this.generation = 0;
 		this.age = 0;
 
-		const network = Network.randomized(NETWORK_SHAPE, this.activationFunction);
-
-		this.population = Population.generatePopulation(POPULATION_SIZE, () => [...network.weights, ...network.biases], {
+		this.population = Population.generatePopulation(POPULATION_SIZE, () => this.generateGenes(), {
 			fitness: c => this.fitness(c),
 			mutate: genes => this.mutate(genes),
 			mutationProbability: MUTATION_PROBABILITY,
@@ -33,6 +32,11 @@ export class PopulationService {
 		this.candidateCars = this.generateCarsFromPopulation();
 		game.onUpdate.add(() => this.checkTime());
 		this.startRace();
+	}
+
+	generateGenes() {
+		const network = Network.randomized(NETWORK_SHAPE, this.activationFunction);
+		return [...network.weights, ...network.biases];
 	}
 
 	checkTime() {
@@ -70,7 +74,7 @@ export class PopulationService {
 	}
 
 	fitness(c: Candidate<number>): number {
-		return this.candidateCars.get(c)!.checkPoints;
+		return this.candidateCars.has(c) ? this.candidateCars.get(c)!.checkPoints : 0;
 	}
 
 	mutate(genes: number[]) {

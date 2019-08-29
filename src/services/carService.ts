@@ -14,7 +14,7 @@ export class CarService {
 	startRace(cars: List<Car>) {
 		this.cars = cars;
 		this.racing = true;
-		this.game.onUpdate.add(() => this.update, this);
+		this.game.onUpdate.add(() => this.update(), this);
 	}
 
 	stopRace() {
@@ -24,15 +24,17 @@ export class CarService {
 
 	update() {
 		this.cars.forEach(car => {
-			car.accelerate();
+			const [turn, accelerate] = car.brain!.activate([...car.activatedSensors, car.speed / car.maxSpeed]);
+			car.turn(turn > 0 ? "right" : "left");
+			accelerate > 0 ? car.accelerate() : car.brake();
 			this.updateCarPosition(car);
 		});
 	}
 
 	updateCarPosition(car: Car) {
 		if (!car.frozen) {
-			const nextPosX = car.pos.x + car.speed * Math.cos(car.direction);
-			const nextPosY = car.pos.y + car.speed * Math.sin(car.direction);
+			const nextPosX = car.pos.x + car.speed * Math.cos(car.direction) * 0.016;
+			const nextPosY = car.pos.y + car.speed * Math.sin(car.direction) * 0.016;
 
 			car.checkCollisions(this.raceMap, nextPosX, nextPosY);
 			car.speed *= 0.999;

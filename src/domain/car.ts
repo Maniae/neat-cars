@@ -96,24 +96,4 @@ export class Car {
 			}
 		}
 	};
-
-	update = (map: RaceMap, delta: number) => {
-		if (!this.frozen) {
-			const nextPosX = this.pos.x + this.speed * Math.cos(this.direction) * delta;
-			const nextPosY = this.pos.y + this.speed * Math.sin(this.direction) * delta;
-
-			this.checkCollisions(map, nextPosX, nextPosY);
-			this.speed *= 0.999;
-			if (this.speed < 9) {
-				this.speed = 0;
-			}
-			if (this.speed > this.maxSpeed) {
-				this.speed = this.maxSpeed;
-			}
-			this.distanceToLastCheckPoint =
-				this.lastCheckPoint == null ? 0 : map.checkPoints[this.lastCheckPoint].distanceTo(this.pos);
-			this.pos.x = nextPosX;
-			this.pos.y = nextPosY;
-		}
-	};
 }

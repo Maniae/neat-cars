@@ -71,27 +71,6 @@ export class DrawService {
 		this.ctx.lineTo(x2, y2);
 		this.ctx.stroke();
 	}
-
-	// loadMap() {
-	// 	this.ctx.drawImage(mapImage, 0, 0);
-	// 	const collisionMap: number[][] = [];
-	// 	for (let x = 0; x < mapImage.width; x++) {
-	// 		const row = [];
-	// 		for (let y = 0; y < mapImage.height; y++) {
-	// 			row.push(this.ctx.getImageData(x, y, 1, 1).data[3] === 0 ? 1 : 0);
-	// 		}
-	// 		collisionMap.push(row);
-	// 	}
-	// 	console.log(collisionMap);
-	// 	const json = JSON.stringify(collisionMap);
-	// 	const element = document.createElement("a");
-	// 	const file = new Blob([json], { type: "application/json" });
-	// 	element.href = URL.createObjectURL(file);
-	// 	element.download = `collisionMap.json`;
-	// 	element.click();
-	// 	// const checkPointArray: CheckPoint[] = (checkPoints as any).map((it: any) => CheckPoint.fromJson(it));
-	// 	// return new RaceMap(collisionMap, checkPointArray);
-	// }
 }
 
 const loadImage = (image: HTMLImageElement) =>

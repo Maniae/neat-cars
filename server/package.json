@@ -1,0 +1,13 @@
+{
+	"name": "neat-cars-server",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"socket.io": "^2.2.0"
+	}
+	}

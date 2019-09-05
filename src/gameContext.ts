@@ -6,7 +6,7 @@ import { PopulationService } from "./services/populationService";
 
 export const GameContext = React.createContext<{
 	carService: CarService;
-	populationService: PopulationService;
+	populationService?: PopulationService;
 	drawService: DrawService;
 	game: Game;
 }>(null as any);

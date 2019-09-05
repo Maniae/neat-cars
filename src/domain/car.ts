@@ -11,7 +11,7 @@ export class Car {
 	readonly name?: string;
 	speed: number = 0;
 	direction: number = Math.PI / 4;
-	brain?: Network;
+	brain: Network;
 	activatedSensors: number[] = [0, 0, 0];
 	frozen: boolean = false;
 	pos: Position;
@@ -19,7 +19,7 @@ export class Car {
 	lastCheckPoint: number | null = null;
 	distanceToLastCheckPoint: number = 0;
 
-	constructor(x: number, y: number, brain?: Network, name?: string) {
+	constructor(x: number, y: number, brain: Network, name?: string) {
 		this.pos = new Position(x, y);
 		this.brain = brain;
 		this.name = name;

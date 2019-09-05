@@ -25,6 +25,7 @@ export class CarService {
 	update() {
 		this.cars.forEach(car => {
 			const [turn, accelerate] = car.brain!.activate([...car.activatedSensors, car.speed / car.maxSpeed]);
+			const inputs = car.activatedSensors.concat();
 			car.turn(turn > 0 ? "right" : "left");
 			accelerate > 0 ? car.accelerate() : car.brake();
 			this.updateCarPosition(car);

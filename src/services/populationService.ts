@@ -4,9 +4,9 @@ import { Game } from "../core/game";
 import { Car } from "../domain/car";
 import { CarService } from "./carService";
 
-const POPULATION_SIZE = 100;
-const MUTATION_PROBABILITY = 0.3;
-const NETWORK_SHAPE = [4, 4, 2];
+const POPULATION_SIZE = 150;
+const MUTATION_PROBABILITY = 0.6;
+const NETWORK_SHAPE = [4, 4, 4, 2];
 const MAX_FRAMES = 625; // ~10 seconds
 // const MAX_FRAMES = 100;
 
@@ -91,5 +91,9 @@ export class PopulationService {
 
 	getNeuronNumber() {
 		return NETWORK_SHAPE.reduce((acc, size) => acc + size, 0);
+	}
+
+	getBestCar() {
+		return this.candidateCars.get(this.population.bestCandidate);
 	}
 }

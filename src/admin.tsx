@@ -3,6 +3,7 @@ import { Network } from "neat";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import io from "socket.io-client";
+import { START_X, START_Y } from "./core/constants";
 import { Game } from "./core/game";
 import { Car } from "./domain/car";
 import { Champion } from "./domain/champion";
@@ -33,7 +34,7 @@ const drawService = new DrawService(game, carService);
 
 socket.on("champion", (champion: Champion) => {
 	// TODO ACTIVATION
-	const car = new Car(200, 50, Network.fromJson(champion.brain, x => x), champion.name);
+	const car = new Car(START_X, START_Y, Network.fromJson(champion.brain, x => x), champion.name);
 	const decisionFunction = new Function(`return ${champion.decisionFunction}`)();
 
 	decisionFunctions = decisionFunctions.set(car, decisionFunction);

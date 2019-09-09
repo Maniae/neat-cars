@@ -1,5 +1,6 @@
 import { List, Map } from "immutable";
 import { Candidate, Network, Population } from "neat";
+import { START_X, START_Y } from "../core/constants";
 import { Game } from "../core/game";
 import { Car } from "../domain/car";
 import { CarService } from "./carService";
@@ -8,7 +9,6 @@ const POPULATION_SIZE = 100;
 const MUTATION_PROBABILITY = 0.6;
 const NETWORK_SHAPE = [4, 4, 4, 2];
 const MAX_FRAMES = 625; // ~10 seconds
-// const MAX_FRAMES = 100;
 
 export class PopulationService {
 	generation: number;
@@ -30,7 +30,7 @@ export class PopulationService {
 		});
 
 		this.candidateCars = this.generateCarsFromPopulation();
-		game.onUpdate.add(() => this.checkTime());
+		this.game.onUpdate.add(() => this.checkTime());
 		this.startRace();
 	}
 
@@ -68,7 +68,10 @@ export class PopulationService {
 		return Map(
 			this.population.candidates.map(c => {
 				const { weights, biases } = this.getWeightAndBiasesFromGenes(c.genes);
-				return [c, new Car(200, 50, Network.fromWeights(weights, biases, NETWORK_SHAPE, this.activationFunction))];
+				return [
+					c,
+					new Car(START_X, START_Y, Network.fromWeights(weights, biases, NETWORK_SHAPE, this.activationFunction)),
+				];
 			})
 		);
 	}

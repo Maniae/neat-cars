@@ -5,8 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"player": "parcel src/index.html",
-		"admin": "parcel src/admin.html --port 8080",
-		"server": "ts-node src/server/server.ts"
+		"admin": "parcel src/admin.html --port 8080"
 	},
 	"author": "",
 	"license": "ISC",

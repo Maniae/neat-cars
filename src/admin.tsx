@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import { Map } from "immutable";
 import { Network } from "neat";
 import * as React from "react";
 import ReactDOM from "react-dom";
@@ -25,6 +25,9 @@ if (!main) {
 
 const game = new Game();
 const carService = new CarService(game);
+let decisionFunctions = Map<Car, (car: Car) => void>();
+
+carService.updateCar = (car: Car) => decisionFunctions.get(car)!.apply(carService, [car]);
 
 const drawService = new DrawService(game, carService);
 
@@ -32,8 +35,10 @@ socket.on("champion", (champion: Champion) => {
 	// TODO ACTIVATION
 	const car = new Car(200, 50, Network.fromJson(champion.brain, x => x), champion.name);
 	const decisionFunction = new Function(`return ${champion.decisionFunction}`)();
-	carService.update = decisionFunction;
-	carService.startRace(List([car]));
+
+	decisionFunctions = decisionFunctions.set(car, decisionFunction);
+
+	carService.startRace(carService.cars.push(car));
 });
 
 ReactDOM.render(

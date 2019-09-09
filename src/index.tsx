@@ -38,7 +38,7 @@ ReactDOM.render(
 
 				const brain = Network.toJson(bestCar.brain);
 				const name = "Tom";
-				const decisionFunction = carService.update.toString();
+				const decisionFunction = carService.updateCar.toString();
 
 				const champion = JSON.stringify({ brain, name, decisionFunction });
 

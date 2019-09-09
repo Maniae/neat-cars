@@ -4,7 +4,7 @@ import { Game } from "../core/game";
 import { Car } from "../domain/car";
 import { CarService } from "./carService";
 
-const POPULATION_SIZE = 1;
+const POPULATION_SIZE = 100;
 const MUTATION_PROBABILITY = 0.6;
 const NETWORK_SHAPE = [4, 4, 4, 2];
 const MAX_FRAMES = 625; // ~10 seconds

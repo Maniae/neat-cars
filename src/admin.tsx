@@ -33,13 +33,18 @@ carService.updateCar = (car: Car) => decisionFunctions.get(car)!.apply(carServic
 const drawService = new DrawService(game, carService);
 
 socket.on("champion", (champion: Champion) => {
-	// TODO ACTIVATION
-	const car = new Car(START_X, START_Y, Network.fromJson(champion.brain, x => x), champion.name);
-	const decisionFunction = new Function(`return ${champion.decisionFunction}`)();
+	try {
+		const decisionFunction = new Function(`return ${champion.decisionFunction}`)();
+		const activationFunction = new Function(`return ${champion.activationFunction}`)();
+		const car = new Car(START_X, START_Y, Network.fromJson(champion.brain, activationFunction), champion.name);
 
-	decisionFunctions = decisionFunctions.set(car, decisionFunction);
+		decisionFunctions = decisionFunctions.set(car, decisionFunction);
 
-	carService.startRace(carService.cars.push(car));
+		const cars = carService.cars.filterNot(c => c.name === car.name);
+		carService.startRace(cars.push(car));
+	} catch (e) {
+		console.warn(`Error while adding car ${champion.name}: ${e}`);
+	}
 });
 
 ReactDOM.render(

@@ -38,8 +38,9 @@ ReactDOM.render(
 
 				const brain = Network.toJson(bestCar.brain);
 				const decisionFunction = carService.updateCar.toString();
+				const activationFunction = populationService.activationFunction.toString();
 
-				const champion = JSON.stringify({ brain, name, decisionFunction });
+				const champion = JSON.stringify({ brain, name, decisionFunction, activationFunction });
 
 				socket.emit("champion", champion);
 			}}

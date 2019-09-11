@@ -1,7 +1,5 @@
 import { Game } from "../core/game.js";
-import * as checkPoints from "../data/checkPoints.json";
 import { Car } from "../domain/car";
-import { CheckPoint } from "../domain/checkPoint";
 import { RaceMap } from "../domain/raceMap";
 import { CarService } from "./carService.js";
 
@@ -28,6 +26,7 @@ export class DrawService {
 
 	update() {
 		const cars = this.carService.cars;
+
 		const raceMap = this.carService.raceMap;
 
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

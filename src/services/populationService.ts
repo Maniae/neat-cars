@@ -17,8 +17,6 @@ export class PopulationService {
 
 	candidateCars: Map<Candidate<number>, Car> = Map();
 
-	activationFunction: (x: number) => number = x => x;
-
 	constructor(private game: Game, private carService: CarService) {
 		this.generation = 0;
 		this.age = 0;
@@ -34,34 +32,11 @@ export class PopulationService {
 		this.startRace();
 	}
 
+	activationFunction: (x: number) => number = x => x;
+
 	generateGenes() {
 		const network = Network.randomized(NETWORK_SHAPE, this.activationFunction);
 		return [...network.weights, ...network.biases];
-	}
-
-	checkTime() {
-		this.age++;
-		if (this.age > MAX_FRAMES && this.carService.racing) {
-			this.restartRace();
-		}
-	}
-
-	restartRace() {
-		this.stopRace();
-
-		this.population = this.population.createNextGeneration();
-		this.candidateCars = this.generateCarsFromPopulation();
-
-		this.startRace();
-	}
-
-	startRace() {
-		this.age = 0;
-		this.carService.startRace(List(this.candidateCars.values()));
-	}
-
-	stopRace() {
-		this.carService.stopRace();
 	}
 
 	generateCarsFromPopulation() {
@@ -94,6 +69,31 @@ export class PopulationService {
 
 	getNeuronNumber() {
 		return NETWORK_SHAPE.reduce((acc, size) => acc + size, 0);
+	}
+
+	checkTime() {
+		this.age++;
+		if (this.age > MAX_FRAMES && this.carService.racing) {
+			this.restartRace();
+		}
+	}
+
+	restartRace() {
+		this.stopRace();
+
+		this.population = this.population.createNextGeneration();
+		this.candidateCars = this.generateCarsFromPopulation();
+
+		this.startRace();
+	}
+
+	startRace() {
+		this.age = 0;
+		this.carService.startRace(List(this.candidateCars.values()));
+	}
+
+	stopRace() {
+		this.carService.stopRace();
 	}
 
 	getBestCar() {

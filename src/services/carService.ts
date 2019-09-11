@@ -11,6 +11,12 @@ export class CarService {
 
 	constructor(private game: Game) {}
 
+	updateCar(car: Car) {
+		const [turn, accelerate] = car.brain!.activate([...car.activatedSensors, car.speed / car.maxSpeed]);
+		car.turn(turn > 0 ? "right" : "left");
+		accelerate > 0 ? car.accelerate() : car.brake();
+	}
+
 	startRace(cars: List<Car>) {
 		this.game.onUpdate.remove(this);
 		this.cars = cars;
@@ -24,14 +30,14 @@ export class CarService {
 	}
 
 	update() {
-		this.cars.forEach(car => this.updateCar(car));
-	}
-
-	updateCar(car: Car) {
-		const [turn, accelerate] = car.brain!.activate([...car.activatedSensors, car.speed / car.maxSpeed]);
-		car.turn(turn > 0 ? "right" : "left");
-		accelerate > 0 ? car.accelerate() : car.brake();
-		this.updateCarPosition(car);
+		this.cars.forEach(car => {
+			try {
+				this.updateCar(car);
+				this.updateCarPosition(car);
+			} catch (e) {
+				console.warn(`Error when updating car ${car.name}: ${e}`);
+			}
+		});
 	}
 
 	updateCarPosition(car: Car) {

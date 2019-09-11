@@ -29,7 +29,7 @@ const drawService = new DrawService(game, carService);
 ReactDOM.render(
 	<GameContext.Provider value={{ game, populationService, carService, drawService }}>
 		<App
-			onChampionReady={() => {
+			onChampionReady={(name: string) => {
 				const bestCar = populationService.getBestCar();
 				if (!bestCar) {
 					console.warn("Couldn't retrieve best Car");
@@ -37,7 +37,6 @@ ReactDOM.render(
 				}
 
 				const brain = Network.toJson(bestCar.brain);
-				const name = "Tom";
 				const decisionFunction = carService.updateCar.toString();
 
 				const champion = JSON.stringify({ brain, name, decisionFunction });

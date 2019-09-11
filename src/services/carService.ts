@@ -12,10 +12,14 @@ export class CarService {
 	constructor(private game: Game) {}
 
 	updateCar(car: Car) {
-		const [turn, accelerate] = car.brain!.activate([...car.activatedSensors, car.speed / car.maxSpeed]);
-		car.turn(turn > 0 ? "right" : "left");
-		accelerate > 0 ? car.accelerate() : car.brake();
+		/**********************************************
+		 * APPELÉ À CHAQUE FRAME, POUR CHAQUE VOITURE *
+		 **********************************************/
 	}
+
+	/**********************************************
+	 * NE RIEN MODIFIER EN DESSOUS DE CETTE LIGNE *
+	 **********************************************/
 
 	startRace(cars: List<Car>) {
 		this.game.onUpdate.remove(this);

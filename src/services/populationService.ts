@@ -17,6 +17,33 @@ export class PopulationService {
 
 	candidateCars: Map<Candidate<number>, Car> = Map();
 
+	activationFunction(x: number): number {
+		/***********************************************
+		 * FONCTION D'ACTIVATION DU RÉSEAU DE NEURONES *
+		 ***********************************************/
+		return x;
+	}
+
+	fitness(candidate: Candidate<number>): number {
+		/**************************************************
+		 * FONCTION DE FITNESS DE L'ALGORITHME GÉNÉTIQUE. *
+		 *         ASSOCIE UN SCORE À UN CANDIDAT         *
+		 **************************************************/
+		return 0;
+	}
+
+	mutate(genes: number[]): number[] {
+		/***************************************************
+		 * FONCTION DE MUTATION DE L'ALGORITHME GÉNÉTIQUE. *
+		 *     RETOURNE UNE VERSION MUTÉE DU GÉNOME        *
+		 ***************************************************/
+		return [...genes];
+	}
+
+	/**********************************************
+	 * NE RIEN MODIFIER EN DESSOUS DE CETTE LIGNE *
+	 **********************************************/
+
 	constructor(private game: Game, private carService: CarService) {
 		this.generation = 0;
 		this.age = 0;
@@ -32,14 +59,7 @@ export class PopulationService {
 		this.startRace();
 	}
 
-	activationFunction: (x: number) => number = x => x;
-
-	generateGenes() {
-		const network = Network.randomized(NETWORK_SHAPE, this.activationFunction);
-		return [...network.weights, ...network.biases];
-	}
-
-	generateCarsFromPopulation() {
+	generateCarsFromPopulation(): Map<Candidate<number>, Car> {
 		return Map(
 			this.population.candidates.map(c => {
 				const { weights, biases } = this.getWeightAndBiasesFromGenes(c.genes);
@@ -51,12 +71,9 @@ export class PopulationService {
 		);
 	}
 
-	fitness(c: Candidate<number>): number {
-		return this.candidateCars.has(c) ? this.candidateCars.get(c)!.checkPoints : 0;
-	}
-
-	mutate(genes: number[]) {
-		return [...genes];
+	generateGenes(): number[] {
+		const network = Network.randomized(NETWORK_SHAPE, this.activationFunction);
+		return [...network.weights, ...network.biases];
 	}
 
 	getWeightAndBiasesFromGenes(genes: number[]) {

@@ -40,7 +40,9 @@ socket.on("champion", (champion: Champion) => {
 
 		decisionFunctions = decisionFunctions.set(car, decisionFunction);
 
-		const cars = carService.cars.filterNot(c => c.name === car.name);
+		const cars = carService.cars
+			.filterNot(c => c.name === car.name)
+			.map(c => new Car(c.pos.x, c.pos.y, c.brain, c.name));
 		carService.startRace(cars.push(car));
 	} catch (e) {
 		console.warn(`Error while adding car ${champion.name}: ${e}`);

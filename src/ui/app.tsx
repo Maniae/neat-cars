@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { usePromise } from "../core/hooks";
 import { GameContext } from "../gameContext";
+import { ScoreBoard } from "./scoreBoard";
 
 export const App = ({ onChampionReady }: { onChampionReady?: (name: string) => void }) => {
 	const { game, drawService } = React.useContext(GameContext);
@@ -20,7 +21,10 @@ export const App = ({ onChampionReady }: { onChampionReady?: (name: string) => v
 				></input>
 			)}
 			{loading ? <div>Chargement...</div> : <button onClick={() => game.start()}>Go</button>}
-			<canvas width={1012} height={750} />
+			<Main>
+				{!onChampionReady && <ScoreBoard />}
+				<canvas width={1012} height={750} />
+			</Main>
 			{onChampionReady && (
 				<button
 					onClick={() => {
@@ -68,4 +72,8 @@ const Container = styled.div`
 		box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 40px 0px;
 		margin: 20px;
 	}
+`;
+
+const Main = styled.div`
+	display: flex;
 `;

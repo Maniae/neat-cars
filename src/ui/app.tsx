@@ -4,7 +4,13 @@ import { usePromise } from "../core/hooks";
 import { GameContext } from "../gameContext";
 import { ScoreBoard } from "./scoreBoard";
 
-export const App = ({ onChampionReady }: { onChampionReady?: (name: string) => void }) => {
+export const App = ({
+	onChampionReady,
+	onRestart,
+}: {
+	onChampionReady?: (name: string) => void;
+	onRestart?: () => void;
+}) => {
 	const { game, drawService } = React.useContext(GameContext);
 	const { loading } = usePromise(() => drawService.init());
 	const [name, setName] = React.useState("");
@@ -22,7 +28,12 @@ export const App = ({ onChampionReady }: { onChampionReady?: (name: string) => v
 			)}
 			{loading ? <div>Chargement...</div> : <button onClick={() => game.start()}>Go</button>}
 			<Main>
-				{!onChampionReady && <ScoreBoard />}
+				{!onChampionReady && onRestart && (
+					<div>
+						<button onClick={() => onRestart()}>Restart</button>
+						<ScoreBoard />
+					</div>
+				)}
 				<canvas width={1012} height={750} />
 			</Main>
 			{onChampionReady && (

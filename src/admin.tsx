@@ -38,11 +38,14 @@ socket.on("champion", (champion: Champion) => {
 		const activationFunction = new Function(`return ${champion.activationFunction}`)();
 		const car = new Car(START_X, START_Y, Network.fromJson(champion.brain, activationFunction), champion.name);
 
+		const carToReplace = carService.cars.find(c => c.name === car.name);
+
+		if (carToReplace) {
+			decisionFunctions = decisionFunctions.delete(carToReplace);
+		}
 		decisionFunctions = decisionFunctions.set(car, decisionFunction);
 
-		const cars = carService.cars
-			.filterNot(c => c.name === car.name)
-			.map(c => new Car(c.pos.x, c.pos.y, c.brain, c.name));
+		const cars = carService.cars.filterNot(c => c.name === car.name);
 		carService.startRace(cars.push(car));
 	} catch (e) {
 		console.warn(`Error while adding car ${champion.name}: ${e}`);
@@ -51,7 +54,17 @@ socket.on("champion", (champion: Champion) => {
 
 ReactDOM.render(
 	<GameContext.Provider value={{ game, carService, drawService }}>
-		<App />
+		<App
+			onRestart={() => {
+				const resetedCars = carService.cars.map(c => {
+					const car = new Car(START_X, START_Y, c.brain, c.name);
+					const decisionFunction = decisionFunctions.get(c)!;
+					decisionFunctions = decisionFunctions.delete(c).set(car, decisionFunction);
+					return car;
+				});
+				carService.startRace(resetedCars);
+			}}
+		/>
 	</GameContext.Provider>,
 	main
 );

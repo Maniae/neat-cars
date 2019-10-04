@@ -15,6 +15,7 @@ export class PopulationService {
 	age: number;
 	population: Population<number>;
 
+	/* Cette Map est immutable - pour changer sa valeur : this.candidateCars = this.candidateCars.set(...)  */
 	candidateCars: Map<Candidate<number>, Car> = Map();
 
 	activationFunction(x: number): number {
